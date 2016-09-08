@@ -2,10 +2,10 @@ package com.englishcentral.video;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/video")
@@ -14,13 +14,13 @@ public class VideoController {
     @Autowired
     private VideoRepository videoRepository;
 
-    @RequestMapping(value = "/{dto}", method = RequestMethod.POST)
-    public Video save(VideoDTO dto){
+    @RequestMapping(method = RequestMethod.POST)
+    public Video save(@RequestBody VideoDTO dto){
         return null;
     }
 
-    @RequestMapping(value = "/{dtos}", method = RequestMethod.POST)
-    public Iterable<Video> save(Iterable<VideoDTO> dtos){
+    @RequestMapping(value = "saveAll", method = RequestMethod.POST)
+    public Iterable<Video> saveAll(@RequestBody List<VideoDTO> dtos){
         return null;
     }
 
