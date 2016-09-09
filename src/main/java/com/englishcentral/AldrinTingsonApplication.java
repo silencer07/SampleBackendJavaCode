@@ -11,6 +11,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+
+import javax.validation.Validator;
 
 @SpringBootApplication
 @ComponentScan
@@ -31,6 +34,11 @@ public class AldrinTingsonApplication {
 	@Bean
 	public MongoClient mongo(Fongo fongo){
 		return fongo.getMongo();
+	}
+
+	@Bean
+	public Validator localValidatorFactoryBean() {
+		return new LocalValidatorFactoryBean();
 	}
 
 	public static void initializeSampleData(VideoRepository videoRepository){
