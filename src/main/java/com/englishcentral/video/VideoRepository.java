@@ -4,6 +4,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-interface VideoRepository extends PagingAndSortingRepository<Video, Long> {
+public interface VideoRepository extends PagingAndSortingRepository<Video, String> {
 
 }

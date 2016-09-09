@@ -1,18 +1,18 @@
 package com.englishcentral.video;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
-@Entity
+@Document(collection = "videos")
 public class Video
 {
     @Id
-    private long id;
+    private String id;
 
     @NotBlank
     private String name;
@@ -26,14 +26,10 @@ public class Video
     private String uploadedBy;
 
     @NotNull
-    private Timestamp uploadTime = new Timestamp(System.currentTimeMillis());
+    private LocalDateTime uploadTime = LocalDateTime.now();
 
-    public long getId() {
+    public String getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -68,7 +64,7 @@ public class Video
         this.uploadedBy = uploadedBy;
     }
 
-    public Timestamp getUploadTime() {
+    public LocalDateTime getUploadTime() {
         return uploadTime;
     }
 }
