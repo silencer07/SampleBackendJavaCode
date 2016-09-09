@@ -47,5 +47,12 @@ public class AldrinTingsonApplication {
 		video2.setLengthInSecs(240);
 		video2.setUploadedBy("SampleUploader2");
 		videoRepository.save(video2);
+
+		Video video3 = new Video();
+		video3.setName("Sample Data 2");
+		video3.setDescription("Sample Data description 2");
+		video3.setLengthInSecs(210);
+		video3.setUploadedBy("SampleUploader2");
+		videoRepository.save(video3);
 	}
 }

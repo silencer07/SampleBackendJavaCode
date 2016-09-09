@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/video")
@@ -41,19 +42,28 @@ public class VideoController {
         return videoRepository.findOne(id);
     }
 
-    ///correct code below
-
-    //sorting should be configurable per field asc/desc
     @RequestMapping(method = RequestMethod.GET)
-    public Iterable<Video> findAll(@RequestParam(value = "sortFields", required = false) List<String> sortFields,
-                            @RequestParam(value = "direction", required = false) Sort.Direction direction){
+    public Iterable<Video> findAll(@RequestParam Map<String,String> sortingParams){
 
-        if(sortFields != null){
-            String[] fields = (String[]) sortFields.toArray();
-            return videoRepository.findAll(new Sort(direction, fields));
+        if(sortingParams != null && !sortingParams.isEmpty()){
+            Sort sort = null;
+
+            for(Map.Entry<String, String> sortingParam : sortingParams.entrySet()){
+                String field = sortingParam.getKey();
+                String direction = sortingParam.getValue();
+
+                if(sort == null){
+                    sort = new Sort(Sort.Direction.fromString(direction), field);
+                } else {
+                    sort = sort.and(new Sort(Sort.Direction.fromString(direction), field));
+                }
+            }
+            return videoRepository.findAll(sort);
         }
         return  videoRepository.findAll();
     }
+
+    ///correct code below
 
     @RequestMapping(value = "/{video}", method = RequestMethod.PUT)
     public Video update(@Valid Video video){
