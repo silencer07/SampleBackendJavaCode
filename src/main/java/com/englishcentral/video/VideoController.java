@@ -16,6 +16,9 @@ import java.util.Map;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
+/**
+ * Rest endpoint for the {@link Video} objects.
+ */
 @RestController
 @RequestMapping("/video")
 public class VideoController {
