@@ -33,7 +33,7 @@ class VideoDTO {
      * @see Video#uploadedBy
      */
     @NotBlank
-    @Size(max = 1000)
+    @Size(max = 50)
     private String uploadedBy;
 
     public String getName() {
