@@ -1,5 +1,6 @@
 package com.englishcentral.video;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -49,6 +50,10 @@ class VideoServiceImpl implements VideoService {
 
     @Override
     public Iterable<Video> save(Iterable<VideoDTO> dtos) {
+        if(dtos == null){
+            throw new IllegalArgumentException("Parameter dtos cannot be null");
+        }
+
         List<Video> videos = new ArrayList<>();
         dtos.forEach(dto -> {
             validate(dto);
@@ -60,18 +65,22 @@ class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public Video findOne(String s) {
-        return videoRepository.findOne(s);
+    public Video findOne(String id) {
+        validateId(id);
+        return videoRepository.findOne(id);
     }
 
     @Override
-    public void delete(String s) {
-        videoRepository.delete(s);
+    public void delete(String id) {
+        validateId(id);
+        videoRepository.delete(id);
     }
 
     @Override
     public Video update(String id, VideoDTO dto){
+        validateId(id);
         validate(dto);
+
         Video existing = videoRepository.findOne(id);
         if(existing != null){
             existing.setName(dto.getName());
@@ -84,9 +93,15 @@ class VideoServiceImpl implements VideoService {
         }
     }
 
+    private void validateId(String id) {
+        if(StringUtils.isBlank(id)){
+            throw new IllegalArgumentException("Parameter id cannot be null");
+        }
+    }
+
     private void validate(Object o){
-        if(validator.validate(o).size() != 0){
-            throw new IllegalArgumentException("DTO should have valid fields");
+        if(o == null || validator.validate(o).size() != 0){
+            throw new IllegalArgumentException("DTO should be not null and have valid fields");
         }
     }
 }
