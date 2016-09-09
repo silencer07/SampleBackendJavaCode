@@ -4,9 +4,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 /**
@@ -25,13 +24,13 @@ public class Video
      * Name of the video that serves as the title too.
      */
     @NotBlank
-    @Max(100)
+    @Size(max = 100)
     private String name;
 
     /**
      * Description of the video that is filled out by the user to tell the viewers what the video is for.
      */
-    @Max(1000)
+    @Size(max = 1000)
     private String description;
 
     /**
@@ -44,13 +43,12 @@ public class Video
      * The username of the uploader. for simplicity's sake of this exercise i just opt to have it as a string
      */
     @NotBlank
-    @Max(50)
+    @Size(max = 50)
     private String uploadedBy;
 
     /**
      * The time the user uploaded the video, which is auto-generated.
      */
-    @NotNull
     private LocalDateTime uploadTime = LocalDateTime.now();
 
     public String getId() {

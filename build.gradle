@@ -36,4 +36,5 @@ dependencies {
 	compile group: 'javax.persistence', name: 'persistence-api', version: '1.0.2'
 	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile group: 'org.assertj', name: 'assertj-core', version: '3.5.2'
 }

@@ -2,8 +2,8 @@ package com.englishcentral.video;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 /**
  * DTO class for {@link Video}. The fields here are the editable fields in the said class.
@@ -14,13 +14,13 @@ class VideoDTO {
      * @see Video#name
      */
     @NotBlank
-    @Max(100)
+    @Size(max = 100)
     private String name;
 
     /**
      * @see Video#description
      */
-    @Max(1000)
+    @Size(max = 1000)
     private String description;
 
     /**
@@ -33,7 +33,7 @@ class VideoDTO {
      * @see Video#uploadedBy
      */
     @NotBlank
-    @Max(50)
+    @Size(max = 1000)
     private String uploadedBy;
 
     public String getName() {
