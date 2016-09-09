@@ -52,7 +52,7 @@ public class AldrinTingsonApplication {
 		video3.setName("Sample Data 2");
 		video3.setDescription("Sample Data description 2");
 		video3.setLengthInSecs(210);
-		video3.setUploadedBy("SampleUploader2");
+		video3.setUploadedBy("SampleUploader3");
 		videoRepository.save(video3);
 	}
 }

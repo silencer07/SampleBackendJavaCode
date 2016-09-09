@@ -3,6 +3,7 @@ package com.englishcentral.video;
 import com.englishcentral.util.ValidList;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,15 +64,22 @@ public class VideoController {
         return  videoRepository.findAll();
     }
 
-    ///correct code below
-
-    @RequestMapping(value = "/{video}", method = RequestMethod.PUT)
-    public Video update(@Valid Video video){
-        return videoRepository.save(video);
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public Video find(@PathVariable String id, @RequestBody @Valid Video video){
+        Video existing = videoRepository.findOne(id);
+        if(existing != null){
+            existing.setName(video.getName());
+            existing.setDescription(video.getDescription());
+            existing.setLengthInSecs(video.getLengthInSecs());
+            existing.setUploadedBy(video.getUploadedBy());
+            return videoRepository.save(existing);
+        } else {
+            throw new DataRetrievalFailureException("Video with id " + id + " does not exists in the database");
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void delete(String id){
+    public void delete(@PathVariable String id){
         videoRepository.delete(id);
     }
 }
