@@ -2,10 +2,17 @@ package com.englishcentral.video;
 
 import com.englishcentral.util.ValidList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping("/video")
@@ -15,13 +22,28 @@ public class VideoController {
     private VideoService videoService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public Video save(@Valid @RequestBody VideoDTO dto){
-        return videoService.save(dto);
+    public Resources<Resource> save(@Valid @RequestBody VideoDTO dto){
+        Video saved = videoService.save(dto);
+
+        List<Resource> videoResources = new ArrayList<>();
+        videoResources.add(buildAsResource(saved));
+
+        Link thisLink = linkTo(VideoController.class).withSelfRel();
+        Resources<Resource> resourceList = new Resources<>(videoResources, thisLink);
+
+        return new Resources<>(resourceList, thisLink);
     }
 
     @RequestMapping(value = "saveAll", method = RequestMethod.POST)
-    public Iterable<Video> saveAll(@Valid @RequestBody ValidList<VideoDTO> dtos){
-        return videoService.save(dtos);
+    public Resources<Resource> saveAll(@Valid @RequestBody ValidList<VideoDTO> dtos){
+        Iterable<Video> videos = videoService.save(dtos);
+
+        List<Resource> videoResources = buildAllAsResource(videos);
+
+        Link thisLink = linkTo(VideoController.class).slash("saveAll").withSelfRel();
+        Resources<Resource> resourceList = new Resources<>(videoResources, thisLink);
+
+        return new Resources<>(resourceList, thisLink);
     }
 
 
@@ -43,5 +65,16 @@ public class VideoController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable String id){
         videoService.delete(id);
+    }
+
+    private List<Resource> buildAllAsResource(Iterable<Video> videos){
+        List<Resource> list = new ArrayList<>();
+        videos.forEach(v -> list.add(buildAsResource(v)));
+        return list;
+    }
+
+    private Resource buildAsResource(Video video) {
+        Link videoLink = linkTo(VideoController.class).slash(video.getId()).withSelfRel();
+        return new Resource(video, videoLink.expand(video.getId()));
     }
 }
