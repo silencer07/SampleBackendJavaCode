@@ -1,7 +1,6 @@
 package com.englishcentral.video.unit;
 
 import com.englishcentral.TestUtil;
-import com.englishcentral.video.Video;
 import com.englishcentral.video.VideoDTO;
 import com.englishcentral.video.VideoService;
 import com.englishcentral.video.VideoServiceImpl;
@@ -11,7 +10,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 /**
  * Unit test for the constraints of the {@link VideoServiceImpl} class.

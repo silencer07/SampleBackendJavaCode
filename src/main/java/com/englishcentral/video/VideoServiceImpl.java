@@ -30,9 +30,9 @@ public class VideoServiceImpl implements VideoService {
                 String direction = sortingParam.getValue();
 
                 if(sort == null){
-                    sort = new Sort(Sort.Direction.fromString(direction), field);
+                    sort = new Sort(Sort.Direction.fromStringOrNull(direction), field);
                 } else {
-                    sort = sort.and(new Sort(Sort.Direction.fromString(direction), field));
+                    sort = sort.and(new Sort(Sort.Direction.fromStringOrNull(direction), field));
                 }
             }
             return videoRepository.findAll(sort);
