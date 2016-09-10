@@ -1,7 +1,5 @@
 package com.englishcentral;
 
-import com.englishcentral.video.Video;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -13,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public final class TestUtil {
 
-    private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    public static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
 
     public static final void assertOffendingField(Object object, String fieldName, Object fieldValue) {
         Map<String, Object> offendingFieldsAndValues = TestUtil.getOffendingFieldAndValues(object);
@@ -24,7 +22,7 @@ public final class TestUtil {
     }
 
     public static final Map<String, Object> getOffendingFieldAndValues(Object object){
-        Set<ConstraintViolation<Object>> violations = validator.validate(object);
+        Set<ConstraintViolation<Object>> violations = VALIDATOR.validate(object);
 
         Map<String, Object> map = new HashMap<>();
         for (ConstraintViolation<Object> violation : violations) {

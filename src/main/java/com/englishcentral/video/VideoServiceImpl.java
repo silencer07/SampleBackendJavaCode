@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-class VideoServiceImpl implements VideoService {
+public class VideoServiceImpl implements VideoService {
 
     @Autowired
     private VideoRepository videoRepository;
@@ -103,5 +103,9 @@ class VideoServiceImpl implements VideoService {
         if(o == null || validator.validate(o).size() != 0){
             throw new IllegalArgumentException("DTO should be not null and have valid fields");
         }
+    }
+
+    public void setValidator(Validator validator){
+        this.validator = validator;
     }
 }
