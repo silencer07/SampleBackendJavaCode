@@ -104,6 +104,7 @@ public class Video
 
     @Override
     public int hashCode() {
-        return getId().hashCode();
+        //workaround for errors in hibernate validator, id is guaranteed to have a value anyway.
+        return getId() != null ? getId().hashCode() : 0;
     }
 }
