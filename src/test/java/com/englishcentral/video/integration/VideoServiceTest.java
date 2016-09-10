@@ -39,7 +39,7 @@ public class VideoServiceTest {
         video1 = new Video();
         video1.setName("test B");
         video1.setUploadedBy("test");
-        video1.setLengthInSecs(1);
+        video1.setLengthInSecs(1L);
         video1.setDescription("test desc");
         video1 = videoRepository.save(video1);
         assertThat(video1.getId()).isNotEmpty();
@@ -47,7 +47,7 @@ public class VideoServiceTest {
         video2 = new Video();
         video2.setName("test A");
         video2.setUploadedBy("test");
-        video2.setLengthInSecs(1);
+        video2.setLengthInSecs(1L);
         video2.setDescription("test desc");
         video2 = videoRepository.save(video2);
         assertThat(video2.getId()).isNotEmpty();
@@ -57,7 +57,7 @@ public class VideoServiceTest {
         dto = new VideoDTO();
         dto.setName("new record");
         dto.setUploadedBy("new record uploaded by");
-        dto.setLengthInSecs(2);
+        dto.setLengthInSecs(2L);
         dto.setDescription("new record description");
 
         assertThat(TestUtil.getOffendingFieldAndValues(dto)).isEmpty();

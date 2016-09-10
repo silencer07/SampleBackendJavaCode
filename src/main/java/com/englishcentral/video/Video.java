@@ -37,7 +37,7 @@ public class Video
      * The length of the video in seconds, stored for faster access.
      */
     @Min(value = 1)
-    private long lengthInSecs;
+    private Long lengthInSecs;
 
     /**
      * The username of the uploader. for simplicity's sake of this exercise i just opt to have it as a string
@@ -71,11 +71,11 @@ public class Video
         this.description = description;
     }
 
-    public long getLengthInSecs() {
+    public Long getLengthInSecs() {
         return lengthInSecs;
     }
 
-    public void setLengthInSecs(long lengthInSecs) {
+    public void setLengthInSecs(Long lengthInSecs) {
         this.lengthInSecs = lengthInSecs;
     }
 

@@ -26,7 +26,7 @@ public class VideoDTOTest {
         dto = new VideoDTO();
         dto.setName("test");
         dto.setDescription("test description");
-        dto.setLengthInSecs(100);
+        dto.setLengthInSecs(100L);
         dto.setUploadedBy("test uploader");
 
         Map<String, Object> offendingFieldsAndValues = TestUtil.getOffendingFieldAndValues(dto);

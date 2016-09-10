@@ -27,7 +27,7 @@ public class VideoDTO {
      * @see Video#lengthInSecs
      */
     @Min(value = 1)
-    private long lengthInSecs;
+    private Long lengthInSecs;
 
     /**
      * @see Video#uploadedBy
@@ -52,11 +52,11 @@ public class VideoDTO {
         this.description = description;
     }
 
-    public long getLengthInSecs() {
+    public Long getLengthInSecs() {
         return lengthInSecs;
     }
 
-    public void setLengthInSecs(long lengthInSecs) {
+    public void setLengthInSecs(Long lengthInSecs) {
         this.lengthInSecs = lengthInSecs;
     }
 

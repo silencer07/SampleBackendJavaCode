@@ -30,7 +30,7 @@ public class VideoServiceTest {
         invalidDTO = new VideoDTO();
         invalidDTO.setName(null);
         invalidDTO.setUploadedBy("test");
-        invalidDTO.setLengthInSecs(1);
+        invalidDTO.setLengthInSecs(1L);
         invalidDTO.setDescription("test desc");
 
         assertThat(TestUtil.getOffendingFieldAndValues(invalidDTO)).isNotEmpty();

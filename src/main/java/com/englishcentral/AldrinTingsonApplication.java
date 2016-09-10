@@ -45,21 +45,21 @@ public class AldrinTingsonApplication {
 		Video video = new Video();
 		video.setName("Sample Data 1");
 		video.setDescription("Sample Data description 1");
-		video.setLengthInSecs(180);
+		video.setLengthInSecs(180L);
 		video.setUploadedBy("SampleUploader1");
 		videoRepository.save(video);
 
 		Video video2 = new Video();
 		video2.setName("Sample Data 2");
 		video2.setDescription("Sample Data description 2");
-		video2.setLengthInSecs(240);
+		video2.setLengthInSecs(240L);
 		video2.setUploadedBy("SampleUploader2");
 		videoRepository.save(video2);
 
 		Video video3 = new Video();
 		video3.setName("Sample Data 2");
 		video3.setDescription("Sample Data description 2");
-		video3.setLengthInSecs(210);
+		video3.setLengthInSecs(210L);
 		video3.setUploadedBy("SampleUploader3");
 		videoRepository.save(video3);
 	}

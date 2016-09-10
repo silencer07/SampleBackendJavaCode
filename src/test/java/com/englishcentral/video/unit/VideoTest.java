@@ -26,7 +26,7 @@ public class VideoTest {
         video = new Video();
         video.setName("test");
         video.setDescription("test description");
-        video.setLengthInSecs(100);
+        video.setLengthInSecs(100L);
         video.setUploadedBy("test uploader");
 
         Map<String, Object> offendingFieldsAndValues = TestUtil.getOffendingFieldAndValues(video);
