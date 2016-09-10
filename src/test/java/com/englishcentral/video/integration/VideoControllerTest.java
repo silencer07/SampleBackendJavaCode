@@ -53,7 +53,7 @@ public class VideoControllerTest {
         video2 = new Video();
         video2.setName("test A");
         video2.setUploadedBy("test");
-        video2.setLengthInSecs(1L);
+        video2.setLengthInSecs(2L);
         video2.setDescription("test desc");
         video2 = videoRepository.save(video2);
         assertThat(video2.getId()).isNotEmpty();
@@ -63,7 +63,7 @@ public class VideoControllerTest {
         dto = new VideoDTO();
         dto.setName("new record");
         dto.setUploadedBy("new record uploaded by");
-        dto.setLengthInSecs(2L);
+        dto.setLengthInSecs(3L);
         dto.setDescription("new record description");
 
         assertThat(TestUtil.getOffendingFieldAndValues(dto)).isEmpty();
@@ -80,27 +80,41 @@ public class VideoControllerTest {
 
     @Test
     public void whenAccessingVideosWithGetThenReturnAllVideos(){
-        Response response = when().get("");
-        assertBodyResponse(response, "", video1, video2);
+        String urlPart = "";
+        Response response = when().get(urlPart);
+        assertBodyResponse(response, urlPart, video1, video2);
     }
 
-    private void assertBodyResponse(Response response, String path, Video... vids){
-        List<Video> videos = Arrays.asList(vids);
-        String[] names = videos.stream().map(Video::getName).toArray(String[]::new);
-        String[] descriptions = videos.stream().map(Video::getDescription).toArray(String[]::new);
-        String[] uploadedBy = videos.stream().map(Video::getUploadedBy).toArray(String[]::new);
-        String[] selfUris = videos.stream().map(v -> getSelfUri(v.getId())).toArray(String[]::new);
-        Integer[] lengthInSecs = videos.stream().mapToInt(v -> toIntExact(v.getLengthInSecs())).boxed().toArray(Integer[]::new);
+    @Test
+    public void whenAccessingVideosWithGetWithSortingCriteriaThenReturnAllVideos(){
+        String urlPart = "?lengthInSecs=desc";
+        Response response = when().get(urlPart);
+        assertBodyResponse(response, urlPart, video2, video1);
+    }
+
+    @Test
+    public void whenAccessingVideoWithGetUsingIdThenReturnSpecificVideo(){
+        String urlPart = "/" + video1.getId();
+        Response response = when().get(urlPart);
+        assertBodyResponse(response, urlPart, video1);
+    }
+
+    private void assertBodyResponse(Response response, String path, Video... videos){
+        String[] names = Arrays.stream(videos).map(Video::getName).toArray(String[]::new);
+        String[] descriptions = Arrays.stream(videos).map(Video::getDescription).toArray(String[]::new);
+        String[] uploadedBy = Arrays.stream(videos).map(Video::getUploadedBy).toArray(String[]::new);
+        String[] selfUris = Arrays.stream(videos).map(v -> getSelfUri(v.getId())).toArray(String[]::new);
+        Integer[] lengthInSecs = Arrays.stream(videos).mapToInt(v -> toIntExact(v.getLengthInSecs())).boxed().toArray(Integer[]::new);
 
         response.then()
             .statusCode(HttpStatus.OK.value())
-            .body("_embedded.videos.id", Matchers.hasSize(2))
-            .body("_embedded.videos", Matchers.hasSize(2))
+            .body("_embedded.videos.id", Matchers.hasSize(videos.length))
+            .body("_embedded.videos", Matchers.hasSize(videos.length))
             .body("_embedded.videos.name", Matchers.contains(names))
             .body("_embedded.videos.description", Matchers.contains(descriptions))
             .body("_embedded.videos.uploadedBy", Matchers.contains(uploadedBy))
             .body("_embedded.videos.lengthInSecs", Matchers.contains(lengthInSecs))
-            .body("_embedded.videos.uploadTime", Matchers.hasSize(2))
+            .body("_embedded.videos.uploadTime", Matchers.hasSize(videos.length))
             .body("_embedded.videos._links.self.href", Matchers.contains(selfUris))
             .body("_links.self.href", Matchers.equalTo(getUri() + path))
         ;
