@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 /**
  * DTO class for {@link Video}. The fields here are the editable fields in the said class.
  */
-class VideoDTO {
+public class VideoDTO {
 
     /**
      * @see Video#name

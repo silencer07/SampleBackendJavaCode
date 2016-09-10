@@ -1,6 +1,7 @@
-package com.englishcentral.video;
+package com.englishcentral.video.unit;
 
 import com.englishcentral.TestUtil;
+import com.englishcentral.video.VideoDTO;
 import org.junit.Before;
 import org.junit.Test;
 
