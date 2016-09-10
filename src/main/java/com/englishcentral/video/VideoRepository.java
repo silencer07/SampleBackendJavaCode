@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VideoRepository extends PagingAndSortingRepository<Video, String> {
 
+    Iterable<Video> findByIdNotIn(String... ids);
+
 }

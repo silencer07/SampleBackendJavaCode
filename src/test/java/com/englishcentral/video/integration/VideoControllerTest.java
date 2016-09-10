@@ -4,12 +4,13 @@ import com.englishcentral.TestUtil;
 import com.englishcentral.video.Video;
 import com.englishcentral.video.VideoDTO;
 import com.englishcentral.video.VideoRepository;
+import com.google.gson.Gson;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.response.Response;
-import org.apache.commons.lang3.ArrayUtils;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.RestAssured.when;
 import static java.lang.Math.toIntExact;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,6 +37,8 @@ public class VideoControllerTest {
 
     @Autowired
     private VideoRepository videoRepository;
+
+    private static final Gson gson = new Gson();
 
     private Video video1;
     private Video video2;
@@ -97,6 +101,64 @@ public class VideoControllerTest {
         String urlPart = "/" + video1.getId();
         Response response = when().get(urlPart);
         assertBodyResponse(response, urlPart, video1);
+    }
+
+    @Test
+    public void whenSavingDTOThenAddToDB(){
+        String urlPart = "";
+        Response response = given().contentType("application/json")
+                .body(gson.toJson(dto)).when().post();
+
+        List<Video> result = new ArrayList<>();
+        videoRepository.findByIdNotIn(video1.getId(), video2.getId()).forEach(result::add);
+        assertThat(result).hasSize(1);
+        assertBodyResponse(response, urlPart, result.get(0));
+    }
+
+    @Test
+    public void whenDeletingVideoUsingIdThenReflectToDB(){
+        String urlPart = "/" + video1.getId();
+        when().delete(urlPart).then()
+                .body("_links.self.href", Matchers.equalTo(getUri() + urlPart));
+
+        assertThat(videoRepository.findOne(video1.getId())).isNull();
+    }
+
+    @Test
+    public void whenUpdatingVideoUsingPutThenReturnUpdatedVideo(){
+        String urlPart = "/" + video1.getId();
+        Response response = given().contentType("application/json")
+                .body(gson.toJson(dto)).when().put(urlPart);
+
+        Video video = videoRepository.findOne(video1.getId());
+        assertBodyResponse(response, urlPart, video);
+
+        assertThat(video1.getName()).isNotEqualTo(video.getName());
+        assertThat(video1.getDescription()).isNotEqualTo(video.getDescription());
+        assertThat(video1.getUploadedBy()).isNotEqualTo(video.getUploadedBy());
+        assertThat(video1.getLengthInSecs()).isNotEqualTo(video.getLengthInSecs());
+    }
+
+    //problem with serialized object via gson. cannot properly deserialized by the endpoint
+    @Ignore
+    @Test
+    public void whenSavingDTOListThenAddToDB(){
+        String urlPart = "/saveAll";
+
+        List<VideoDTO> dtos = new ArrayList<>();
+        dtos.add(dto);
+
+        System.out.println(gson.toJson(dtos));
+
+        Response response = given().contentType("application/json")
+                .body(gson.toJson(dtos)).when().post();
+
+        System.out.println(response.then().extract().asString());
+
+        List<Video> result = new ArrayList<>();
+        videoRepository.findByIdNotIn(video1.getId(), video2.getId()).forEach(result::add);
+        assertThat(result).hasSize(1);
+        assertBodyResponse(response, urlPart, result.get(0));
     }
 
     private void assertBodyResponse(Response response, String path, Video... videos){
